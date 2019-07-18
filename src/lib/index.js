@@ -54,15 +54,12 @@ class CameraPhoto {
           resolve(stream);
         })
         .catch((error) => {
-          let {name, constraint, message} = error;
-          //console.error(name + ' ' + constraint + ' ' + message);
-          // retry...
           setTimeout(() => {
             this.numberOfMaxResolutionTry += 1;
             this._getStreamDeviceMaxResolution(idealFacingMode)
-              .then(() => {resolve()})
+              .then(() => { resolve(); })
               .catch(() => {
-                reject(error)
+                reject(error);
               });
           }, 20);
         });
