@@ -131,12 +131,21 @@ class CameraPhoto {
   stopCamera () {
     return new Promise((resolve, reject) => {
       if (this.stream) {
+        // Clear video.srcObject before stopping tracks
+        this.videoElement.srcObject = null;
+
         this.stream.getTracks().forEach(function (track) {
+          // Delete a track before stopping it
+          this.stream.removeTrack(track);
+
+          // Stop track
           track.stop();
         });
+
         this.videoElement.src = '';
         this.stream = null;
         this._setSettings(null);
+
         resolve();
       }
       reject(Error('no stream to stop!'));
